@@ -4,71 +4,79 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.List;
 
-import io.reactivex.Scheduler;
+
 import io.reactivex.SingleObserver;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.CompletableObserver;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.CompletableObserver;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView postsRecycler;
+    private Button insertBtn, getBtn;
+    private EditText titleEdt, bodyEdt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //some widget
+        insertBtn  = findViewById(R.id.insert_post_btn);
+        getBtn  = findViewById(R.id.git_post_btn);
+        titleEdt   = findViewById(R.id.title_post_edt);
+        bodyEdt   = findViewById(R.id.body_post_edt);
+
+
         //Recycler View Implement
         postsRecycler = findViewById(R.id.list_posts_rcy);
         PostsAdapter adapter = new PostsAdapter();
         postsRecycler.setAdapter(adapter);
 
-        PostsDatabase postsDatabase = PostsDatabase.getInstance(this);
+        final PostsDatabase postsDatabase = PostsDatabase.getInstance(this);
 
-        postsDatabase.postsDao().insertPost(new Post(2 , "Ahmed","Coding Room"))
-                .subscribeOn(Schedulers.computation())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
+        // Insert Posts Buttom
+        insertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postsDatabase.postsDao().insertPost(new Post(2,titleEdt.getEditableText().toString(),
+                        bodyEdt.getEditableText().toString())).
+            }
+        });
 
-                    }
+        //Get Button for list posts
+        getBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postsDatabase.postsDao().getPosts()
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SingleObserver<List<Post>>() {
+                            @Override
+                            public void onSubscribe(io.reactivex.disposables.Disposable d) {
 
-                    @Override
-                    public void onComplete() {
+                            }
 
-                    }
+                            @Override
+                            public void onSuccess(List<Post> posts) {
 
-                    @Override
-                    public void onError(@NonNull Throwable e) {
+                            }
 
-                    }
-                });
+                            @Override
+                            public void onError(Throwable e) {
 
-        postsDatabase.postsDao().getPosts()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<Post>>() {
-                    @Override
-                    public void onSubscribe(io.reactivex.disposables.Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(List<Post> posts) {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-                });
+                            }
+                        });
+            }
+        });
 
 
     }

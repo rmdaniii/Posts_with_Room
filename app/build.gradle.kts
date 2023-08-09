@@ -51,8 +51,9 @@ dependencies {
     implementation("androidx.room:room-rxjava2:$room_version")
 
 
-    // RxJava
-    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
-    implementation ("io.reactivex.rxjava3:rxjava:3.1.5")
+    //rxjava
+    val rxJavaVersion = "2.1.1"
+    implementation ("io.reactivex.rxjava2:rxandroid:$rxJavaVersion")
+    implementation ("io.reactivex.rxjava2:rxjava:$rxJavaVersion")
 
 }

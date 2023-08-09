@@ -16,7 +16,6 @@ abstract class PostsDatabase  extends RoomDatabase {
         if (instance == null){
             instance = Room.databaseBuilder(context,
                             PostsDatabase.class, "posts_database")
-
                     .fallbackToDestructiveMigration()
                     .build();
 

@@ -56,4 +56,8 @@ dependencies {
     implementation ("io.reactivex.rxjava2:rxandroid:$rxJavaVersion")
     implementation ("io.reactivex.rxjava2:rxjava:$rxJavaVersion")
 
+    //Json
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+
 }

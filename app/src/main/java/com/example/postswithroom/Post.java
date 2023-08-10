@@ -8,12 +8,12 @@ public class Post {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int userId;
+    private User user;
     private String title;
     private String body;
 
-    public Post( int userId, String title, String body) {
-        this.userId = userId;
+    public Post( User user, String title, String body) {
+        this.user = user;
         this.title = title;
         this.body = body;
     }
@@ -26,8 +26,8 @@ public class Post {
         return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUserId() {
+        return user;
     }
 
     public String getTitle() {

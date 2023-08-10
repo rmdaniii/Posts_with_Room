@@ -47,11 +47,13 @@ public class MainActivity extends AppCompatActivity {
         insertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postsDatabase.postsDao().insertPost(new Post(2,titleEdt.getEditableText().toString(),
-                        bodyEdt.getEditableText().toString())).
+             
             }
         });
-
+        postsDatabase.postsDao().insertPost(new Post(new User(1,"Ahmed"),titleEdt.getEditableText().toString(),
+                bodyEdt.getEditableText().toString()))
+                .subscribeOn(Schedulers.computation())
+                
         //Get Button for list posts
         getBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new SingleObserver<List<Post>>() {
                             @Override
-                            public void onSubscribe(io.reactivex.disposables.Disposable d) {
+                            public void onSubscribe(Disposable d) {
 
                             }
 
